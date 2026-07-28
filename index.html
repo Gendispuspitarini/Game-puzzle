@@ -96,22 +96,40 @@
     </style>
 </head>
 <body>
+ /* Styling untuk Wadah 5 Logo */
+.logo-group {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px; /* Jarak antar logo */
+    margin-bottom: 10px;
+}
 
-    <div class="header">
-        <img src="file1.jpg" alt="Logo" class="logo">
-        <h1>Puzzle Geser Gambar</h1>
-    </div>
-        <img src="file2.jpg" alt="Logo" class="logo">
-        <h1>Puzzle Geser Gambar</h1>
-   </div>
-        <img src="file3.jpg" alt="Logo" class="logo">
-        <h1>Puzzle Geser Gambar</h1>
-    </div>
-        <img src="file4.jpg" alt="Logo" class="logo">
-        <h1>Puzzle Geser Gambar</h1>
+.logo-group img {
+    width: 45px;
+    height: 45px;
+    border-radius: 8px;
+    object-fit: cover;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+h1 {
+    margin: 5px 0 15px 0;
+    font-size: 22px;
+    color: #fbbf24;
+}
+        <!-- Container 5 Logo Mendatar -->
+<div class="logo-group">
+    <img src="file1.jpg" alt="Logo 1">
+    <img src="file2.jpg" alt="Logo 2">
+    <img src="file3.jpg" alt="Logo 3">
+    <img src="file4.jpg" alt="Logo 4">
+    <img src="file5.jpg" alt="Logo 5">
 </div>
-    <img src="file5.jpg" alt="Logo" class="logo">
-        <h1>Puzzle Geser Gambar</h1>
+
+<!-- Judul Game Cukup Satu Saja di Bawah Logo -->
+<h1>Puzzle Geser Gambar</h1>
     </div>
     <div class="stats-container">
         <div class="stat-card">Level: <span id="level-txt" style="color:#4ade80">1 (3x3)</span></div>
