@@ -3,135 +3,123 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Puzzle Petualangan Labirin</title>
+    <title>Game Puzzle Gambar</title>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             text-align: center;
-            /* Latar belakang (Background) */
-            background: linear-gradient(135deg, #1e1e2f, #111119);
+            background: linear-gradient(135deg, #1e1b4b, #311042);
             color: #ffffff;
             margin: 0;
-            padding: 10px;
+            padding: 15px;
         }
 
-        /* Logo & Header */
-        .logo {
-            width: 70px;
-            height: 70px;
-            vertical-align: middle;
-            border-radius: 50%;
-        }
-        h1 { margin: 5px 0; font-size: 24px; color: #ffca28; }
-
-        /* Panel Informasi: Skor & Level */
-        .info-panel {
+        /* Header & Logo */
+        .header {
             display: flex;
+            align-items: center;
             justify-content: center;
-            gap: 20px;
-            font-size: 18px;
-            font-weight: bold;
+            gap: 10px;
             margin-bottom: 10px;
         }
-        .stat-box {
+        .logo {
+            width: 50px;
+            height: 50px;
+            border-radius: 10px;
+        }
+        h1 { margin: 0; font-size: 22px; color: #fbbf24; }
+
+        /* Status & Skor */
+        .stats-container {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        .stat-card {
             background: rgba(255, 255, 255, 0.1);
-            padding: 5px 15px;
+            padding: 8px 15px;
             border-radius: 8px;
+            font-weight: bold;
+            font-size: 14px;
             border: 1px solid rgba(255, 255, 255, 0.2);
         }
 
-        /* Cara Bermain */
-        .instructions {
-            font-size: 13px;
-            color: #b0bec5;
-            margin-bottom: 10px;
-        }
-
-        /* Canvas Game */
-        canvas {
-            border: 4px solid #ffca28;
-            border-radius: 8px;
-            background-color: #000;
-            box-shadow: 0px 4px 15px rgba(0,0,0,0.5);
-            max-width: 90vw;
-            height: auto;
-            display: block;
+        /* Board Puzzle */
+        #puzzle-board {
+            display: grid;
+            gap: 4px;
+            width: 300px;
+            height: 300px;
             margin: 0 auto;
+            background-color: #0f172a;
+            padding: 6px;
+            border-radius: 12px;
+            border: 3px solid #fbbf24;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
         }
 
-        /* Virtual Joystick / Controller HP */
-        .joystick-container {
-            margin-top: 15px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 8px;
-        }
-        .row { display: flex; gap: 8px; }
-        .j-btn {
-            width: 60px;
-            height: 60px;
-            font-size: 22px;
-            background: #37474f;
-            color: #fff;
-            border: 2px solid #ffca28;
-            border-radius: 50%;
+        .tile {
+            background-size: 300px 300px;
+            background-repeat: no-repeat;
+            border-radius: 6px;
             cursor: pointer;
-            user-select: none;
-            -webkit-user-select: none;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
-        }
-        .j-btn:active { background: #ffca28; color: #000; }
-        
-        #status-msg {
-            font-size: 18px;
-            color: #00e676;
-            height: 25px;
-            margin-top: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             font-weight: bold;
+            font-size: 20px;
+            color: rgba(255,255,255,0.8);
+            text-shadow: 1px 1px 3px #000;
+            user-select: none;
+            transition: all 0.15s ease;
+        }
+
+        .empty {
+            background: #1e293b !important;
+            border: 2px dashed rgba(255,255,255,0.2);
+        }
+
+        #message {
+            font-size: 16px;
+            font-weight: bold;
+            color: #4ade80;
+            min-height: 24px;
+            margin-top: 15px;
+        }
+
+        .instructions {
+            font-size: 12px;
+            color: #94a3b8;
+            margin-top: 10px;
         }
     </style>
 </head>
 <body>
 
-    <!-- Logo & Judul Game -->
-    <div>
-        <!-- Ganti URL gambar di bawah dengan URL Logo kamu sendiri jika ada -->
-        <img src="https://cdn-icons-png.flaticon.com/512/808/808439.png" alt="Logo Game" class="logo">
-        <h1>Puzzle Labirin Serial</h1>
+    <div class="header">
+        <img src="https://cdn-icons-png.flaticon.com/512/3199/3199853.png" alt="Logo" class="logo">
+        <h1>Puzzle Geser Gambar</h1>
     </div>
 
-    <!-- Petunjuk Cara Bermain -->
+    <div class="stats-container">
+        <div class="stat-card">Level: <span id="level-txt" style="color:#4ade80">1 (3x3)</span></div>
+        <div class="stat-card">Langkah: <span id="moves-txt" style="color:#fbbf24">0</span></div>
+        <div class="stat-card">Skor: <span id="score-txt" style="color:#38bdf8">0</span></div>
+    </div>
+
+    <!-- Papan Puzzle -->
+    <div id="puzzle-board"></div>
+
+    <div id="message">Geser kotak untuk menyusun gambar!</div>
+
     <p class="instructions">
-        <strong>Cara Bermain:</strong> Gerakkan karakter 🔴 ke tujuan 🟩. Hindari Rintangan ⚠️ (Merah)!
+        <strong>Cara Bermain:</strong> Ketuk/klik kotak di samping area kosong untuk menggesernya.
     </p>
 
-    <!-- Panel Informasi (Skor & Level) -->
-    <div class="info-panel">
-        <div class="stat-box">Level: <span id="level-txt" style="color:#00e676;">1</span></div>
-        <div class="stat-box">Skor: <span id="score-txt" style="color:#ffca28;">0</span></div>
-    </div>
-
-    <div id="status-msg"></div>
-
-    <!-- Canvas Utama Game -->
-    <canvas id="gameCanvas" width="400" height="400"></canvas>
-
-    <!-- Virtual Joystick untuk HP -->
-    <div class="joystick-container">
-        <button class="j-btn" onclick="move('up')">▲</button>
-        <div class="row">
-            <button class="j-btn" onclick="move('left')">◄</button>
-            <button class="j-btn" onclick="move('down')">▼</button>
-            <button class="j-btn" onclick="move('right')">►</button>
-        </div>
-    </div>
-
-    <!-- Efek Musik dan Suara (Audio Khusus Web) -->
     <script>
-        // Efek Suara Sederhana Menggunakan Web Audio API
+        // Web Audio API untuk efek suara
         const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        
         function playSound(freq, duration) {
             try {
                 const osc = audioCtx.createOscillator();
@@ -145,140 +133,116 @@
             } catch(e) {}
         }
 
-        const canvas = document.getElementById('gameCanvas');
-        const ctx = canvas.getContext('2d');
-
-        const tileSize = 40;
-        let currentLevel = 0;
-        let score = 0;
-        let player = { x: 1, y: 1 };
-
-        // Desain Level Serialis (Berantai / Bertingkat)
-        // 0 = Jalan, 1 = Dinding, 2 = Finish, 3 = Rintangan/Jebakan
-        const levels = [
-            // Level 1: Mudah (Pengenalan)
-            [
-                [1,1,1,1,1,1,1,1,1,1],
-                [1,0,0,0,1,0,0,0,2,1],
-                [1,0,1,0,1,0,1,1,0,1],
-                [1,0,1,0,0,0,0,1,0,1],
-                [1,0,1,1,1,1,0,1,0,1],
-                [1,0,0,0,0,1,0,0,0,1],
-                [1,1,1,1,0,1,1,1,0,1],
-                [1,0,0,0,0,0,0,0,0,1],
-                [1,0,1,1,1,1,1,1,0,1],
-                [1,1,1,1,1,1,1,1,1,1]
-            ],
-            // Level 2: Sedang (Ada Rintangan / Danger Zone)
-            [
-                [1,1,1,1,1,1,1,1,1,1],
-                [1,0,3,0,0,0,1,0,2,1],
-                [1,0,1,1,1,0,1,0,1,1],
-                [1,0,0,3,1,0,0,0,0,1],
-                [1,1,1,0,1,1,1,1,0,1],
-                [1,0,0,0,3,0,0,1,0,1],
-                [1,0,1,1,1,1,0,1,0,1],
-                [1,0,3,0,0,1,0,0,0,1],
-                [1,0,1,1,0,0,0,1,0,1],
-                [1,1,1,1,1,1,1,1,1,1]
-            ],
-            // Level 3: Sulit (Banyak Rintangan)
-            [
-                [1,1,1,1,1,1,1,1,1,1],
-                [1,0,0,3,0,3,0,0,0,1],
-                [1,1,1,0,1,1,1,1,0,1],
-                [1,0,3,0,1,2,0,1,0,1],
-                [1,0,1,0,1,1,0,1,0,1],
-                [1,0,1,0,3,0,0,3,0,1],
-                [1,0,1,1,1,1,1,1,0,1],
-                [1,0,3,0,0,3,0,0,0,1],
-                [1,0,1,1,1,1,0,1,0,1],
-                [1,1,1,1,1,1,1,1,1,1]
-            ]
+        // Gambar per level
+        const images = [
+            "https://picsum.photos/id/1018/600/600", // Level 1
+            "https://picsum.photos/id/1015/600/600", // Level 2
+            "https://picsum.photos/id/1025/600/600"  // Level 3
         ];
 
-        function drawGame() {
-            const map = levels[currentLevel];
-            for (let r = 0; r < 10; r++) {
-                for (let c = 0; c < 10; c++) {
-                    if (map[r][c] === 1) ctx.fillStyle = '#37474f';      // Dinding
-                    else if (map[r][c] === 2) ctx.fillStyle = '#00e676'; // Finish
-                    else if (map[r][c] === 3) ctx.fillStyle = '#ff1744'; // Rintangan (Bahaya)
-                    else ctx.fillStyle = '#1c252a';                     // Jalan
-                    
-                    ctx.fillRect(c * tileSize, r * tileSize, tileSize, tileSize);
-                    ctx.strokeStyle = '#111';
-                    ctx.strokeRect(c * tileSize, r * tileSize, tileSize, tileSize);
-                }
-            }
+        let currentLevel = 0;
+        let gridSize = 3; // Start 3x3
+        let tiles = [];
+        let moves = 0;
+        let score = 0;
 
-            // Gambar Karakter Utama
-            ctx.fillStyle = '#ff5252';
-            ctx.beginPath();
-            ctx.arc(
-                player.x * tileSize + tileSize / 2,
-                player.y * tileSize + tileSize / 2,
-                tileSize / 3, 0, Math.PI * 2
-            );
-            ctx.fill();
+        const board = document.getElementById('puzzle-board');
+
+        function initGame() {
+            gridSize = 3 + currentLevel; // Level 1 = 3x3, Level 2 = 4x4, dst.
+            board.style.gridTemplateColumns = `repeat(${gridSize}, 1fr)`;
+            board.style.gridTemplateRows = `repeat(${gridSize}, 1fr)`;
+            
+            moves = 0;
+            document.getElementById('moves-txt').innerText = moves;
+            document.getElementById('level-txt').innerText = `${currentLevel + 1} (${gridSize}x${gridSize})`;
+            document.getElementById('message').innerText = "Geser kotak untuk menyusun gambar!";
+
+            // Buat array angka [0, 1, 2, ..., (gridSize*gridSize - 1)]
+            tiles = Array.from({length: gridSize * gridSize}, (_, i) => i);
+            
+            // Acak kepingan
+            shuffle(tiles);
+            renderBoard();
         }
 
-        function move(dir) {
-            let newX = player.x;
-            let newY = player.y;
-
-            if (dir === 'up') newY--;
-            if (dir === 'down') newY++;
-            if (dir === 'left') newX--;
-            if (dir === 'right') newX++;
-
-            const map = levels[currentLevel];
-
-            // Cek Dinding
-            if (map[newY][newX] !== 1) {
-                player.x = newX;
-                player.y = newY;
-                playSound(300, 0.05); // Suara jalan
+        function shuffle(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
             }
+        }
 
-            // Cek jika terkena Rintangan (Bahaya)
-            if (map[player.y][player.x] === 3) {
-                playSound(150, 0.3); // Suara Kalah
-                document.getElementById('status-msg').innerText = '⚠️ Kena Rintangan! Ulangi Level!';
-                document.getElementById('status-msg').style.color = '#ff1744';
-                player = { x: 1, y: 1 }; // Reset posisi
-                return drawGame();
-            }
+        function renderBoard() {
+            board.innerHTML = '';
+            const imgUrl = images[currentLevel % images.length];
 
-            // Cek Menang / Naik Level (Serialis)
-            if (map[player.y][player.x] === 2) {
-                playSound(600, 0.2); // Suara Menang
-                score += 100;
-                document.getElementById('score-txt').innerText = score;
-                
-                if (currentLevel < levels.length - 1) {
-                    currentLevel++;
-                    document.getElementById('level-txt').innerText = currentLevel + 1;
-                    document.getElementById('status-msg').innerText = '🎉 Hebat! Naik ke Level ' + (currentLevel + 1);
-                    document.getElementById('status-msg').style.color = '#00e676';
-                    player = { x: 1, y: 1 };
+            tiles.forEach((tileValue, index) => {
+                const tile = document.createElement('div');
+                tile.classList.add('tile');
+
+                if (tileValue === gridSize * gridSize - 1) {
+                    // Tile Kosong
+                    tile.classList.add('empty');
                 } else {
-                    document.getElementById('status-msg').innerText = '🏆 TAMAT! Kamu Memenangi Semua Level!';
-                }
-            }
+                    // Menghitung koordinat gambar
+                    const row = Math.floor(tileValue / gridSize);
+                    const col = tileValue % gridSize;
+                    const percentage = 100 / (gridSize - 1);
 
-            drawGame();
+                    tile.style.backgroundImage = `url('${imgUrl}')`;
+                    tile.style.backgroundPosition = `${col * percentage}% ${row * percentage}%`;
+                    tile.style.backgroundSize = `${gridSize * 100}% ${gridSize * 100}%`;
+                    tile.innerText = tileValue + 1; // Angka bantuan
+                }
+
+                tile.addEventListener('click', () => moveTile(index));
+                board.appendChild(tile);
+            });
         }
 
-        // Kontrol Keyboard PC
-        window.addEventListener('keydown', (e) => {
-            if (e.key === 'ArrowUp') move('up');
-            if (e.key === 'ArrowDown') move('down');
-            if (e.key === 'ArrowLeft') move('left');
-            if (e.key === 'ArrowRight') move('right');
-        });
+        function moveTile(index) {
+            const emptyIndex = tiles.indexOf(gridSize * gridSize - 1);
+            
+            // Cek apakah posisi yang diklik bertetangga dengan kotak kosong
+            const isAdjacent = (
+                (Math.abs(index - emptyIndex) === 1 && Math.floor(index / gridSize) === Math.floor(emptyIndex / gridSize)) ||
+                Math.abs(index - emptyIndex) === gridSize
+            );
 
-        drawGame();
+            if (isAdjacent) {
+                // Tukar tile
+                [tiles[index], tiles[emptyIndex]] = [tiles[emptyIndex], tiles[index]];
+                moves++;
+                document.getElementById('moves-txt').innerText = moves;
+                playSound(400, 0.05);
+                renderBoard();
+                checkWin();
+            }
+        }
+
+        function checkWin() {
+            const isSolved = tiles.every((val, index) => val === index);
+            if (isSolved) {
+                playSound(600, 0.3);
+                score += (1000 - moves * 10);
+                if (score < 100) score = 100;
+                document.getElementById('score-txt').innerText = score;
+
+                if (currentLevel < 2) {
+                    document.getElementById('message').innerText = "🎉 SELAMAT! Lanjut ke Level Berikutnya...";
+                    setTimeout(() => {
+                        currentLevel++;
+                        initGame();
+                    }, 2000);
+                } else {
+                    document.getElementById('message').innerText = "🏆 TAMAT! Kamu Menyelesaikan Semua Puzzle!";
+                }
+            }
+        }
+
+        // Jalankan Game Pertama Kali
+        initGame();
     </script>
 </body>
 </html>
