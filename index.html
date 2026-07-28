@@ -14,20 +14,29 @@
             padding: 15px;
         }
 
-        /* Header & Logo */
-        .header {
+        /* PERBAIKAN: Pengatur 5 Logo Berjejer Kecil */
+        .logo-group {
             display: flex;
-            align-items: center;
             justify-content: center;
-            gap: 10px;
+            align-items: center;
+            gap: 8px;
             margin-bottom: 10px;
         }
-        .logo {
-            width: 50px;
-            height: 50px;
-            border-radius: 10px;
+
+        .logo-group img {
+            width: 45px;       /* Ukuran lebar logo kecil */
+            height: 45px;      /* Ukuran tinggi logo kecil */
+            border-radius: 8px;
+            object-fit: cover;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.4);
         }
-        h1 { margin: 0; font-size: 22px; color: #fbbf24; }
+
+        h1 { 
+            margin: 0 0 15px 0; 
+            font-size: 20px; 
+            color: #fbbf24; 
+        }
 
         /* Status & Skor */
         .stats-container {
@@ -36,16 +45,17 @@
             gap: 15px;
             margin-bottom: 15px;
         }
+
         .stat-card {
             background: rgba(255, 255, 255, 0.1);
-            padding: 8px 15px;
+            padding: 8px 12px;
             border-radius: 8px;
             font-weight: bold;
-            font-size: 14px;
+            font-size: 13px;
             border: 1px solid rgba(255, 255, 255, 0.2);
         }
 
-        /* Board Puzzle */
+        /* Papan Puzzle */
         #puzzle-board {
             display: grid;
             gap: 4px;
@@ -72,7 +82,6 @@
             color: rgba(255,255,255,0.8);
             text-shadow: 1px 1px 3px #000;
             user-select: none;
-            transition: all 0.15s ease;
         }
 
         .empty {
@@ -81,7 +90,7 @@
         }
 
         #message {
-            font-size: 16px;
+            font-size: 15px;
             font-weight: bold;
             color: #4ade80;
             min-height: 24px;
@@ -96,56 +105,25 @@
     </style>
 </head>
 <body>
- /* Styling untuk Wadah 5 Logo */
-.logo-group {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 8px; /* Jarak antar logo */
-    margin-bottom: 10px;
-}
 
-.logo-group img {
-    width: 45px;
-    height: 45px;
-    border-radius: 8px;
-    object-fit: cover;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.4);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-}
-
-h1 {
-    margin: 5px 0 15px 0;
-    font-size: 22px;
-    color: #fbbf24;
-}
-        <!-- Container 5 Logo Mendatar -->
-<body>
-
-    <!-- 5 Logo Mendatar -->
+    <!-- Wadah 5 Logo (Pastikan nama file sesuai gambar di GitHub kamu) -->
     <div class="logo-group">
-        <img src="file1.jpg" alt="Logo 1">
-        <img src="file2.jpg" alt="Logo 2">
-        <img src="file3.jpg" alt="Logo 3">
-        <img src="file4.jpg" alt="Logo 4">
-        <img src="file5.jpg" alt="Logo 5">
+        <img src="IMG-20260728-WA0025.jpg" alt="Logo 1">
+        <img src="logo2.png" alt="Logo 2">
+        <img src="logo3.png" alt="Logo 3">
+        <img src="logo4.png" alt="Logo 4">
+        <img src="logo5.png" alt="Logo 5">
     </div>
 
-    <!-- Judul Game -->
+    <!-- Judul Game Cukup 1 Saja -->
     <h1>Puzzle Geser Gambar</h1>
 
-    <!-- (Sisa kode puzzle kamu berada di bawah sini) -->
-
-<!-- Judul Game Cukup Satu Saja di Bawah Logo -->
-<h1>Puzzle Geser Gambar</h1>
-    </div>
     <div class="stats-container">
         <div class="stat-card">Level: <span id="level-txt" style="color:#4ade80">1 (3x3)</span></div>
         <div class="stat-card">Langkah: <span id="moves-txt" style="color:#fbbf24">0</span></div>
         <div class="stat-card">Skor: <span id="score-txt" style="color:#38bdf8">0</span></div>
     </div>
 
-    <!-- Papan Puzzle -->
     <div id="puzzle-board"></div>
 
     <div id="message">Geser kotak untuk menyusun gambar!</div>
@@ -155,7 +133,6 @@ h1 {
     </p>
 
     <script>
-        // Web Audio API untuk efek suara
         const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
         function playSound(freq, duration) {
             try {
@@ -170,15 +147,14 @@ h1 {
             } catch(e) {}
         }
 
-        // Gambar per level
         const images = [
-            "https://picsum.photos/id/1018/600/600", // Level 1
-            "https://picsum.photos/id/1015/600/600", // Level 2
-            "https://picsum.photos/id/1025/600/600"  // Level 3
+            "https://picsum.photos/id/1018/600/600",
+            "https://picsum.photos/id/1015/600/600",
+            "https://picsum.photos/id/1025/600/600"
         ];
 
         let currentLevel = 0;
-        let gridSize = 3; // Start 3x3
+        let gridSize = 3;
         let tiles = [];
         let moves = 0;
         let score = 0;
@@ -186,7 +162,7 @@ h1 {
         const board = document.getElementById('puzzle-board');
 
         function initGame() {
-            gridSize = 3 + currentLevel; // Level 1 = 3x3, Level 2 = 4x4, dst.
+            gridSize = 3 + currentLevel;
             board.style.gridTemplateColumns = `repeat(${gridSize}, 1fr)`;
             board.style.gridTemplateRows = `repeat(${gridSize}, 1fr)`;
             
@@ -195,10 +171,7 @@ h1 {
             document.getElementById('level-txt').innerText = `${currentLevel + 1} (${gridSize}x${gridSize})`;
             document.getElementById('message').innerText = "Geser kotak untuk menyusun gambar!";
 
-            // Buat array angka [0, 1, 2, ..., (gridSize*gridSize - 1)]
             tiles = Array.from({length: gridSize * gridSize}, (_, i) => i);
-            
-            // Acak kepingan
             shuffle(tiles);
             renderBoard();
         }
@@ -219,10 +192,8 @@ h1 {
                 tile.classList.add('tile');
 
                 if (tileValue === gridSize * gridSize - 1) {
-                    // Tile Kosong
                     tile.classList.add('empty');
                 } else {
-                    // Menghitung koordinat gambar
                     const row = Math.floor(tileValue / gridSize);
                     const col = tileValue % gridSize;
                     const percentage = 100 / (gridSize - 1);
@@ -230,7 +201,7 @@ h1 {
                     tile.style.backgroundImage = `url('${imgUrl}')`;
                     tile.style.backgroundPosition = `${col * percentage}% ${row * percentage}%`;
                     tile.style.backgroundSize = `${gridSize * 100}% ${gridSize * 100}%`;
-                    tile.innerText = tileValue + 1; // Angka bantuan
+                    tile.innerText = tileValue + 1;
                 }
 
                 tile.addEventListener('click', () => moveTile(index));
@@ -241,14 +212,12 @@ h1 {
         function moveTile(index) {
             const emptyIndex = tiles.indexOf(gridSize * gridSize - 1);
             
-            // Cek apakah posisi yang diklik bertetangga dengan kotak kosong
             const isAdjacent = (
                 (Math.abs(index - emptyIndex) === 1 && Math.floor(index / gridSize) === Math.floor(emptyIndex / gridSize)) ||
                 Math.abs(index - emptyIndex) === gridSize
             );
 
             if (isAdjacent) {
-                // Tukar tile
                 [tiles[index], tiles[emptyIndex]] = [tiles[emptyIndex], tiles[index]];
                 moves++;
                 document.getElementById('moves-txt').innerText = moves;
@@ -278,8 +247,8 @@ h1 {
             }
         }
 
-        // Jalankan Game Pertama Kali
         initGame();
     </script>
 </body>
-</html>
+</html>                    
+        
